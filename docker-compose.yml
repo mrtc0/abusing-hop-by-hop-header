@@ -18,6 +18,16 @@ services:
       - app
     links:
       - app
+  nuster:
+    image: nuster/nuster
+    ports:
+      - "1234:80"
+    depends_on:
+      - apache
+    links:
+      - apache
+    volumes:
+      - ./nuster/nuster.cfg:/etc/nuster/nuster.cfg
   varnish:
     build:
       context: .
