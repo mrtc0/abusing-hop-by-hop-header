@@ -1,0 +1,32 @@
+version: '2'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+  apache:
+    build:
+      context: .
+      dockerfile: ./apache/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    links:
+      - app
+  varnish:
+    build:
+      context: .
+      dockerfile: ./varnish/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - apache
+    links:
+      - apache
+    volumes:
+      - ./varnish/default.vcl:/etc/varnish/default.vcl
